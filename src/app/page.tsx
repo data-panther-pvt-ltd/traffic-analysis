@@ -7,6 +7,7 @@ import {
   UploadCloud,
   Search
 } from 'lucide-react';
+import LogoutButton from '../components/logoutButton';
 
 import ChatAssistant from '@/components/ChatAssistant';
 import CreateEmbeddingForm from '@/components/CreateEmbeddingForm';
@@ -31,6 +32,7 @@ export default function EnhancedTrafficAI() {
                   <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 text-center">
                     Geo Spatial RAG
                   </h1>
+                  <LogoutButton/>
                 </div>
 {/*                
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-3">

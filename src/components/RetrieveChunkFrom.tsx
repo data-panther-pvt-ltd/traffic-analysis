@@ -18,7 +18,7 @@ export default function RetrieveForm() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://34.133.72.233:8000'}/retrieve?query=${encodeURIComponent(query)}&top_k=${segments}`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/retrieve?query=${encodeURIComponent(query)}&top_k=${segments}`,
         {
           method: 'POST',
         }

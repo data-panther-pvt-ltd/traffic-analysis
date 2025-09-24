@@ -8,6 +8,7 @@ import {
   Search
 } from 'lucide-react';
 import LogoutButton from '../components/logoutButton';
+import { useI18n } from '@/lib/i18n';
 
 import ChatAssistant from '@/components/ChatAssistant';
 import CreateEmbeddingForm from '@/components/CreateEmbeddingForm';
@@ -15,6 +16,7 @@ import RetrieveChunkForm from '@/components/RetrieveChunkFrom';
 
 export default function EnhancedTrafficAI() {
   const [activeTab, setActiveTab] = useState('chat');
+  const { t, language } = useI18n();
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
@@ -30,7 +32,7 @@ export default function EnhancedTrafficAI() {
                     <Activity className="w-8 h-8 text-white" />
                   </div>
                   <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 text-center">
-                    Geo Spatial RAG
+                    {t('app_title')}
                   </h1>
                   <LogoutButton/>
                 </div>
@@ -54,9 +56,9 @@ export default function EnhancedTrafficAI() {
             <div className="bg-white/80 backdrop-blur-sm p-2 rounded-2xl shadow-lg border border-gray-200 w-full max-w-3xl">
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  { id: 'chat', label: 'AI Assistant', icon: Bot, color: 'blue' },
-                  { id: 'embedding', label: 'Create Embeddings', icon: UploadCloud, color: 'blue' },
-                  { id: 'retrieve', label: 'Search Data', icon: Search, color: 'blue' }
+                  { id: 'chat', label: t('tab_ai'), icon: Bot, color: 'blue' },
+                  { id: 'embedding', label: t('tab_embedding'), icon: UploadCloud, color: 'blue' },
+                  { id: 'retrieve', label: t('tab_retrieve'), icon: Search, color: 'blue' }
                 ].map((tab) => (
                   <button
                     key={tab.id}
@@ -87,9 +89,9 @@ export default function EnhancedTrafficAI() {
               <div className="space-y-6">
                 <div className="text-center">
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-                    Semantic Data Processing
+                    {t('semantic_data_processing')}
                   </h2>
-                  <p className="text-gray-600">Transform raw traffic data into searchable semantic vectors</p>
+                  <p className="text-gray-600">{t('transform_raw')}</p>
                 </div>
                 <div className="max-w-2xl mx-auto">
                   <CreateEmbeddingForm />
@@ -101,9 +103,9 @@ export default function EnhancedTrafficAI() {
               <div className="space-y-6">
                 <div className="text-center">
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-                    Semantic Search Engine
+                    {t('semantic_search_engine')}
                   </h2>
-                  <p className="text-gray-600">Find relevant traffic data using intelligent semantic search</p>
+                  <p className="text-gray-600">{t('find_relevant')}</p>
                 </div>
                 <div className="max-w-2xl mx-auto">
                   <RetrieveChunkForm />

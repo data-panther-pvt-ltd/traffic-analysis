@@ -51,7 +51,7 @@ export default function CreateEmbeddingForm() {
     setStatus(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://34.133.72.233:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
       const query = new URLSearchParams();
       

@@ -3,6 +3,7 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Bot, User, Send, MapPin, Clock, BarChart3, Sparkles, Zap } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 interface ChatMessage {
   id: string;
@@ -62,6 +63,7 @@ export default function TrafficChatBot() {
   const [isStreaming, setIsStreaming] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t, language, locale } = useI18n();
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function TrafficChatBot() {
 
   // Memoized API endpoint
   const apiEndpoint = useMemo(() => 
-    `${process.env.NEXT_PUBLIC_API_URL ?? "http://34.133.72.233:8000"}/chat`,
+    `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/chat`,
     []
   );
 
@@ -119,8 +121,9 @@ export default function TrafficChatBot() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept-Language": language,
         },
-        body: JSON.stringify({ query: userMessage }),
+        body: JSON.stringify({ query: userMessage, language }),
       });
 
       let reply = "Sorry, no response";
@@ -199,9 +202,9 @@ export default function TrafficChatBot() {
 
   // Quick action buttons
   const quickActions = [
-    { icon: MapPin, label: "Traffic hotspots", query: "Show me current traffic hotspots in Dubai" },
-    { icon: Clock, label: "Peak hours", query: "What are the peak traffic hours today?" },
-    { icon: BarChart3, label: "Route analysis", query: "Analyze best routes from Dubai Marina to Downtown" }
+    { icon: MapPin, label: t('qa_hotspots'), query: language === 'ar' ? 'اعرض نقاط الازدحام الحالية في دبي' : 'Show me current traffic hotspots in Dubai' },
+    { icon: Clock, label: t('qa_peak_hours'), query: language === 'ar' ? 'ما هي ساعات الذروة اليوم؟' : 'What are the peak traffic hours today?' },
+    { icon: BarChart3, label: t('qa_route_analysis'), query: language === 'ar' ? 'حلّل أفضل الطرق من مرسى دبي إلى وسط المدينة' : 'Analyze best routes from Dubai Marina to Downtown' }
   ];
 
   // Memoized chat messages to prevent unnecessary re-renders
@@ -236,9 +239,9 @@ export default function TrafficChatBot() {
             <p className="text-sm leading-relaxed break-words">{chat.message}</p>
           )}
           <div className="mt-2 text-xs opacity-70">
-            {new Date(chat.timestamp).toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {new Date(chat.timestamp).toLocaleTimeString(locale, {
+              hour: '2-digit',
+              minute: '2-digit'
             })}
           </div>
         </div>
@@ -266,11 +269,11 @@ export default function TrafficChatBot() {
                 <Bot className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">AI Assistant</h3>
+                <h3 className="text-xl font-bold">{t('ai_assistant')}</h3>
                 <p className="text-blue-100 text-sm">
-                  {isLoading ? "Analyzing traffic data..." : 
-                   isStreaming ? "Generating response..." : 
-                   "Ready to help with traffic insights"}
+                  {isLoading ? t('analyzing_data') : 
+                   isStreaming ? t('generating_response') : 
+                   t('ready')}
                 </p>
               </div>
             </div>
@@ -287,10 +290,10 @@ export default function TrafficChatBot() {
                   <Bot className="w-10 h-10 text-slate-700" />
                 </div>
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                  Welcome to Dubai Traffic AI!
+                  {t('welcome_title')}
                 </h4>
                 <p className="text-gray-600 text-sm">
-                  Ask me about traffic patterns, congestion, routes, or use the quick actions below.
+                  {t('welcome_desc')}
                 </p>
               </div>
             )}
@@ -316,7 +319,7 @@ export default function TrafficChatBot() {
                       <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-75"></div>
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse delay-150"></div>
                     </div>
-                    <span className="text-xs text-gray-500">AI is typing...</span>
+                    <span className="text-xs text-gray-500">{t('ai_typing')}</span>
                   </div>
                 </div>
               </div>
@@ -337,7 +340,7 @@ export default function TrafficChatBot() {
                       <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-75"></div>
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-150"></div>
                     </div>
-                    <span className="text-sm text-gray-600">Analyzing traffic data...</span>
+                    <span className="text-sm text-gray-600">{t('analyzing_data')}</span>
                   </div>
                 </div>
               </div>
@@ -347,7 +350,7 @@ export default function TrafficChatBot() {
           {/* Quick Actions */}
           {chatLog.length === 0 && !isStreaming && (
             <div className="px-6 py-4 border-t border-gray-100 bg-white/60">
-              <p className="text-sm font-medium text-gray-700 mb-3">Quick Actions:</p>
+              <p className="text-sm font-medium text-gray-700 mb-3">{t('quick_actions')}</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 {quickActions.map((action, index) => (
                   <button
@@ -374,7 +377,7 @@ export default function TrafficChatBot() {
                   ref={inputRef}
                   type="text"
                   className="w-full border-2 border-gray-200 bg-white/90 p-4 rounded-2xl focus:outline-none focus:ring-blue-500/20 transition-all duration-200 placeholder-gray-500 text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                  placeholder="Ask about Dubai traffic patterns, routes, or congestion..."
+                  placeholder={t('input_placeholder')}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -391,7 +394,7 @@ export default function TrafficChatBot() {
               >
                 <Send className="w-5 h-5" />
                 <span className="hidden sm:inline">
-                  {isLoading ? "Analyzing..." : isStreaming ? "Generating..." : "Send"}
+                  {isLoading ? t('btn_analyzing') : isStreaming ? t('btn_generating') : t('btn_send')}
                 </span>
               </button>
             </div>
@@ -401,9 +404,7 @@ export default function TrafficChatBot() {
 
       {/* Footer */}
       <div className="max-w-4xl mx-auto mt-8 text-center">
-        <p className="text-sm text-gray-600">
-          Powered by advanced AI • Real-time traffic analysis • Dubai-focused insights
-        </p>
+        <p className="text-sm text-gray-600">{t('powered_by')}</p>
       </div>
 
       <style jsx>{`

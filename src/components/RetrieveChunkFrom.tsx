@@ -3,6 +3,8 @@
 
 import { useState } from 'react';
 import { Brain, Search, Zap } from 'lucide-react';
+import { FASTAPI_BASE_URL } from "@/../constant/constansts";
+
 
 export default function RetrieveForm() {
   const [query, setQuery] = useState('');
@@ -18,7 +20,7 @@ export default function RetrieveForm() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/retrieve?query=${encodeURIComponent(query)}&top_k=${segments}`,
+        `${process.env.NEXT_PUBLIC_API_URL || FASTAPI_BASE_URL}/retrieve?query=${encodeURIComponent(query)}&top_k=${segments}`,
         {
           method: 'POST',
         }

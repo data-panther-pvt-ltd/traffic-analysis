@@ -3,6 +3,7 @@
 
 import { Globe, UploadCloud, Zap, Plus, X } from "lucide-react";
 import { useState } from "react";
+import { FASTAPI_BASE_URL } from "@/../constant/constansts";
 
 export default function CreateEmbeddingForm() {
   const [files, setFiles] = useState(['']);
@@ -51,7 +52,7 @@ export default function CreateEmbeddingForm() {
     setStatus(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || FASTAPI_BASE_URL;
 
       const query = new URLSearchParams();
       

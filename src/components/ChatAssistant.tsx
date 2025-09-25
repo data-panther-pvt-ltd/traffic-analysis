@@ -4,6 +4,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Bot, User, Send, MapPin, Clock, BarChart3, Sparkles, Zap } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { FASTAPI_BASE_URL } from "@/../constant/constansts";
 
 interface ChatMessage {
   id: string;
@@ -74,7 +75,7 @@ export default function TrafficChatBot() {
 
   // Memoized API endpoint
   const apiEndpoint = useMemo(() => 
-    `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/chat`,
+    `${process.env.NEXT_PUBLIC_API_URL ?? FASTAPI_BASE_URL}/chat`,
     []
   );
 
